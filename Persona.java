@@ -4,7 +4,7 @@ package PracticaED;
  * Clase Persona que se instancia con los campos y los valores de los mismos informados por consola
  * Muestra todos los datos de la persona asi commo el calculo del IMC
  * Se muestra si la persona en mayor de edad o no
- * @version 0.1 04/02/2023 
+ * @version 0.0 05/02/2023 
  *
  * @author eslooj
  *
@@ -129,7 +129,7 @@ public class Persona {
 		/**
 		//v0.1 Metodo que nos devuelven booleano indicando si es mayor o menor de edad
 		 * */
-		
+		/*
 		public boolean esMayorDeEdad(){
 			
 			//Se comprueba para cada objeto Persona si es mayor de edad o no
@@ -139,7 +139,7 @@ public class Persona {
 				return(false);
 			}
 		}
-		
+		*/
 		
 		/**
 		 * 
@@ -172,13 +172,13 @@ public class Persona {
 			//v0.1 Se indica por consola si la persona es mayor de edad o no
 			 * */
 			
-			
+			/*
 			if(this.esMayorDeEdad()) {
 				System.out.println("Es MAYOR de edad..");
 			}else {
 				System.out.println("Es MENOR de edad..");
 			}
-			
+			*/
 			
 			return "Informacion de la persona:\n"
 			+ "Nombre: " + nombre + "\n"
