@@ -4,7 +4,7 @@ package PracticaED;
  * Clase Persona que se instancia con los campos y los valores de los mismos informados por consola
  * Muestra todos los datos de la persona asi commo el calculo del IMC
  * Se muestra si la persona en mayor de edad o no
- * @version 0.0 05/02/2023 
+ * @version 1.1 25/03/2023 
  *
  * @author eslooj
  *
@@ -15,19 +15,25 @@ public class Persona {
 	public static final int INFRAPESO = -1;
 	public static final int PESO_IDEAL = 0;
 	public static final int SOBREPESO = 1;
-	private String nombre;
-	private int edad;
-	private String DNI;
-	private char sexo;
-	private double peso;
-	private double altura;
+	public String nombre;
+	public int edad;
+	public String DNI;
+	public char sexo;
+	public double peso;
+	public double altura;
+	public String calle;
+	public String localidad;
+	public String codPostal;
 	
 		/**
 		 * Constructor de Persona sin parametros
 		 */
+	
+		/*
 		public Persona() {
 			this("", 0, SEXO_DEF, 0, 0);
 		}
+		*/
 	
 		/**
 		 * Constructor de Persona con 3 parametros
@@ -35,6 +41,7 @@ public class Persona {
 		 * @param edad
 		 * @param sexo
 		 */
+		/*
 		public Persona(String nombre, int edad, char sexo) {
 			this(nombre, edad, sexo, 0, 0);
 		}
@@ -47,11 +54,15 @@ public class Persona {
 		 * @param peso
 		 * @param altura
 		 */
-		public Persona(String nombre, int edad, char sexo, double peso, double altura) {
+		
+		public Persona(String nombre, int edad, char sexo, double peso, double altura,String calle,String localidad,String codPostal) {
 			this.nombre = nombre;
 			this.edad = edad;
 			this.peso = peso;
 			this.altura = altura;
+			this.calle=calle;
+			this.localidad=localidad;
+			this.codPostal=codPostal;
 			generarDni();
 			this.sexo = sexo;
 			comprobarSexo();
@@ -66,7 +77,7 @@ public class Persona {
 			}
 		}
 		
-		/** Genera DNI para el campo dni de Persona para partiendo un numero aleatorio
+		/** Genera DNI para el campo dni de Persona partiendo un numero aleatorio
 		 */
 		private void generarDni() {
 			final int divisor = 23;
@@ -129,7 +140,7 @@ public class Persona {
 		/**
 		//v0.1 Metodo que nos devuelven booleano indicando si es mayor o menor de edad
 		 * */
-		/*
+		
 		public boolean esMayorDeEdad(){
 			
 			//Se comprueba para cada objeto Persona si es mayor de edad o no
@@ -139,7 +150,7 @@ public class Persona {
 				return(false);
 			}
 		}
-		*/
+		
 		
 		/**
 		 * 
@@ -172,13 +183,13 @@ public class Persona {
 			//v0.1 Se indica por consola si la persona es mayor de edad o no
 			 * */
 			
-			/*
+			
 			if(this.esMayorDeEdad()) {
 				System.out.println("Es MAYOR de edad..");
 			}else {
 				System.out.println("Es MENOR de edad..");
 			}
-			*/
+			
 			
 			return "Informacion de la persona:\n"
 			+ "Nombre: " + nombre + "\n"

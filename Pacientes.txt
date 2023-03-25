@@ -1,0 +1,5 @@
+85455156J,pepe,39,rue del percebe,orihuela,03300,
+10654210N,juan,30,pepe baldos,alicante,03000,
+22920462L,maria,20,bailen,Madrid,28080,
+31159881X,manolo,44,obispo rocamora,orihuela,03300,
+86543770Z,jesus,30,x,jacarilla,03301,
