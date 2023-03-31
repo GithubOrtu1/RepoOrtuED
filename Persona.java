@@ -4,7 +4,8 @@ package PracticaED;
  * Clase Persona que se instancia con los campos y los valores de los mismos informados por consola
  * Muestra todos los datos de la persona asi commo el calculo del IMC
  * Se muestra si la persona en mayor de edad o no
- * @version 1.1 25/03/2023 
+ * @version 2.1 31/03/2023 
+ * Se añade la funcionalidad de guardar visitas
  *
  * @author eslooj
  *
@@ -19,8 +20,8 @@ public class Persona {
 	public int edad;
 	public String DNI;
 	public char sexo;
-	public double peso;
-	public double altura;
+	public static double peso;
+	public static double altura;
 	public String calle;
 	public String localidad;
 	public String codPostal;
@@ -156,23 +157,38 @@ public class Persona {
 		 * 
 		 * @return Devuelve constante indicando IMC
 		 */
-		public int calcularIMC() {
+			public int calcularIMC() {
 			//Calculamos el peso de la persona
 			double pesoActual = peso / (Math.pow(altura, 2));
 			//Segun el peso, devuelve un codigo
-			if (pesoActual >= 20 && pesoActual <= 25) {
-			return PESO_IDEAL;
-			} else if (pesoActual < 20) {
-			return INFRAPESO;
-			} else {
-			return SOBREPESO;
+				if (pesoActual >= 20 && pesoActual <= 25) {
+					return PESO_IDEAL;
+				} else if (pesoActual < 20) {
+					return INFRAPESO;
+				} else {
+					return SOBREPESO;
+				}
 			}
-		}
+			
+			public static int calcularIMC(float altura_actual,float peso_actual) {
+				//Calculamos el peso de la persona
+				double pesoActual = peso_actual / (Math.pow(altura_actual, 2));
+				//Segun el peso, devuelve un codigo
+				if (pesoActual >= 20 && pesoActual <= 25) {
+					return PESO_IDEAL;
+				} else if (pesoActual < 20) {
+					return INFRAPESO;
+				} else {
+					return SOBREPESO;
+				}
+			
+			}
 			
 		/**
 		 * Metodo que muestra todos los datos asociados a Persona
 		 */
-		public String toString() {
+		public String toString() 
+		{
 			String sexo;
 			if (this.sexo == 'H') {
 			sexo = "hombre";
@@ -190,14 +206,17 @@ public class Persona {
 				System.out.println("Es MENOR de edad..");
 			}
 			
-			
 			return "Informacion de la persona:\n"
 			+ "Nombre: " + nombre + "\n"
 			+ "Sexo: " + sexo + "\n"
 			+ "Edad: " + edad + " años\n"
 			+ "DNI: " + DNI + "\n"
 			+ "Peso: " + peso + " kg\n"
-			+ "Altura: " + altura + " metros\n";
-		}
+			+ "Altura: " + altura + " metros\n"
+			+ "Calle: " + calle + "\n"
+			+ "Localidad: " + localidad + "\n"
+			+ "Codigo Postal : " + codPostal;
+			
+		}//toString
 		
 }//clase persona

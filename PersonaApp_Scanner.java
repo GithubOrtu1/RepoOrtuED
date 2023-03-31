@@ -2,8 +2,9 @@ package PracticaED;
 
 /**
  * Clase PersonaApp_Scanner ejecutable 
- * @version 1.1 25/03/2023 
+ * @version 2.1 25/03/2023 
  * @author eslooj
+ * Se añade la funcionalidad de guardar visitas
  */
 import java.util.Locale;
 import java.util.Scanner;
@@ -18,7 +19,7 @@ public class PersonaApp_Scanner {
 		boolean mostrarMenu=true;
 		
 		do{
-			System.out.println("BASE DE DATOS DE PACIENTES/CONSULTAS v1.1");
+			System.out.println("BASE DE DATOS DE PACIENTES/CONSULTAS v2.1");
 			System.out.println("Indique la opción a ejecutar (1,2,3):");
 			System.out.println("1. Añadir nuevo paciente");
 			System.out.println("2. Añadir nueva visita");
@@ -30,11 +31,11 @@ public class PersonaApp_Scanner {
 			
 			switch(opcion_menu) {
 			case 1:
-				nuevoPaciente();
+				nuevoPaciente(false,"");
 			break;
 			
 			case 2:
-				//nuevaVisita();
+				nuevaVisita();
 			break;
 			
 			case 3:
@@ -73,7 +74,7 @@ public class PersonaApp_Scanner {
 		}
 		
 		//Metodo que añade un nuevo paciente si no esta dado de alta
-		public static void nuevoPaciente() {
+		public static void nuevoPaciente(boolean insertarVisita,String dni_nuevo) {
 			
 			Scanner sc = new Scanner(System.in);
 			sc.useDelimiter("\n");
@@ -108,8 +109,12 @@ public class PersonaApp_Scanner {
 			
 			//Se tienen todos los datos del paciente. Se genera una nueva persona
 			
+			
 			Persona personaX = new Persona(nombre, edad, sexo, peso, altura,calle,localidad,codPostal);
-
+			//Si el dni viene dado se considera el mismo en lugar del vaor autogenerado
+			if(dni_nuevo!="") {
+				personaX.DNI=dni_nuevo;
+			}
 			
 			//Se comprueba si el DNI de la nueva persona ya existe en el fichero. Si es así no se inserta 
 			TratamientoFicheros tf1=new TratamientoFicheros();
@@ -118,31 +123,61 @@ public class PersonaApp_Scanner {
 				System.out.println("El paciente ya está registrado...");
 			}else{
 				//Se inserta el paciente
-				tf1.escribeFichero(personaX);
 				System.out.println("Se procederá a insertar un nuevo paciente...");
+				
+				//Se guardan los datos del paciente en el fichero
+				tf1.escribeFichero(personaX);
 			}
+			
+			
+			//Si insertarVisita es true se guarda la visita
+			if(insertarVisita){
+				//Se calcula el IMC y se guarda la visita
+				int calculo_IMC=personaX.calcularIMC();
+				tf1.guardaVisita(personaX);
+			}
+			
+		}//nuevoPaciente
 		
-			/*
-			Persona persona1 = new Persona();
-			Persona persona2 = new Persona(nombre, edad, sexo);
-			Persona persona3 = new Persona(nombre, edad, sexo, peso, altura);
-			persona1.setNombre("Laura");
-			persona1.setEdad(30);
-			persona1.setSexo('M');
-			persona1.setPeso(60);
-			persona1.setAltura(1.60);
-			persona2.setPeso(90.5);
-			persona2.setAltura(1.80);
-			System.out.println("Persona1");
-			MuestraMensajePeso(persona1);
-			System.out.println(persona1.toString());
-			System.out.println("Persona2");
-			MuestraMensajePeso(persona2);
-			System.out.println(persona2.toString());
-			System.out.println("Persona3");
-			MuestraMensajePeso(persona3);
-			System.out.println(persona3.toString());
-			*/
+		//Metodo que añade una nueva visita
+		public static void nuevaVisita() {
+			
+		//Se pide al usuario que nos indique el DNI para comprobar si se trata de un paciente nuevo o no
+		String dni_paciente=new String();
+		boolean existePaciente=false;
+		System.out.println("Indique el DNI del paciente: ");
+		Scanner sc_dni=new Scanner(System.in);
+		dni_paciente=sc_dni.nextLine();
+		
+		//Se comprueba si existe o no como paciente
+		TratamientoFicheros tf2=new TratamientoFicheros();
+		existePaciente=tf2.esDNIduplicado(dni_paciente);
+		//Se devuelve true si ya existe el paciente , se inserta la visita
+		
+		if(existePaciente) {
+			//Se inserta una nueva visita pidiendo la altura y peso
+			System.out.println("El paciente ya estaba registrado en el sistema...");
+			Scanner sc_altura=new Scanner(System.in);
+			float altura;
+			System.out.println("Indique la altura : ");
+			altura=sc_altura.nextFloat();
+			
+			Scanner sc_peso=new Scanner(System.in);
+			float peso;
+			System.out.println("Indique el peso : ");
+			peso=sc_peso.nextFloat();
+			
+			TratamientoFicheros tf3=new TratamientoFicheros();
+			tf3.guardaVisita(dni_paciente,altura,peso);
+			
+		}else {
+			//Se trata de un paciente nuevo. Se llama a nuevoPaciente con DNI a NULL
+			nuevoPaciente(true,"");
 		}
+			
+
+			
+		}//nuevaVisita
+		
 		
 }//clase PersonaApp_Scanner
