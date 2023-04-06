@@ -140,7 +140,7 @@ public class PersonaApp_Scanner {
 			tf3.guardarVisita(dni_paciente,altura,peso);
 			
 		}else {
-			//Se trata de un paciente nuevo. Se llama a nuevoPaciente con DNI vacio
+			//Se trata de un paciente nuevo. Se llama a nuevoPaciente con el DNI informado
 			nuevoPaciente(true,dni_paciente);
 		}			
 			
