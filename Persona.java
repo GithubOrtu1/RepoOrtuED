@@ -139,16 +139,15 @@ public class Persona {
 		}
 		
 		/**
-		//v0.1 Metodo que nos devuelven booleano indicando si es mayor o menor de edad
-		 * */
-		
-		public boolean esMayorDeEdad(){
+		 * metodo que devuelve una cadena indicando si es mayor o menor de edad
+		 * @return
+		 */
+		public String esMayorDeEdad(){
 			
-			//Se comprueba para cada objeto Persona si es mayor de edad o no
 			if(this.edad>=18){
-				return(true);
+				return("MAYOR de edad..");
 			}else {
-				return(false);
+				return("MENOR de edad..");
 			}
 		}
 		
@@ -170,6 +169,12 @@ public class Persona {
 				}
 			}
 			
+			/**
+			 * metodo calcularIMC static que recibe parametros
+			 * @param altura_actual
+			 * @param peso_actual
+			 * @return constante indicando IMC
+			 */
 			public static int calcularIMC(float altura_actual,float peso_actual) {
 				//Calculamos el peso de la persona
 				double pesoActual = peso_actual / (Math.pow(altura_actual, 2));
@@ -195,21 +200,16 @@ public class Persona {
 			} else {
 			sexo = "mujer";
 			}
+			
 			/**
-			//v0.1 Se indica por consola si la persona es mayor de edad o no
+			//v2.2 Se indica por consola si la persona es mayor de edad o no
 			 * */
-			
-			
-			if(this.esMayorDeEdad()) {
-				System.out.println("Es MAYOR de edad..");
-			}else {
-				System.out.println("Es MENOR de edad..");
-			}
 			
 			return "Informacion de la persona:\n"
 			+ "Nombre: " + nombre + "\n"
 			+ "Sexo: " + sexo + "\n"
 			+ "Edad: " + edad + " años\n"
+			+this.esMayorDeEdad() +"\n"
 			+ "DNI: " + DNI + "\n"
 			+ "Peso: " + peso + " kg\n"
 			+ "Altura: " + altura + " metros\n"

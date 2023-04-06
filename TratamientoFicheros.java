@@ -21,7 +21,10 @@ public class TratamientoFicheros{
 	String ruta_pacientes = "C:\\Users\\X100171\\OneDrive - Santander Office 365\\Desktop\\Eclipse-Workspace\\PracticaED\\src\\PracticaED\\almacenamiento\\Pacientes.txt";
 	String ruta_visitas = "C:\\Users\\X100171\\OneDrive - Santander Office 365\\Desktop\\Eclipse-Workspace\\PracticaED\\src\\PracticaED\\almacenamiento\\Visitas.txt";
 	
-	//Metodo de escritura
+	/**
+	 * metodo que guarda los datos de un paciente en fichero. Recibe un objeto persona
+	 * @param p
+	 */
 	
 	public void escribeFichero(Persona p) {
 	
@@ -56,9 +59,13 @@ public class TratamientoFicheros{
 	
 	}//escribeFichero
 	
+	/**
+	 * metodo que recibe un dni y devuelve un booleano indicando si ya se encuentra en el fichero de pacientes
+	 * @param dni
+	 * @return
+	 */
 	public boolean esDNIduplicado(String dni){
 			File f = new File(ruta_pacientes);
-			//System.out.println("La ruta del fichero es: " +f.getAbsolutePath());
 			String dniOriginal;
 			dniOriginal=dni;
 			
@@ -94,44 +101,11 @@ public class TratamientoFicheros{
 				
 	}//comprobarDNIexistente
 	
-	public String[] mostrarPacientesExistentes() {
-
-		//Se lee el fichero de pacientes
-		File f = new File(ruta_pacientes);
-		String listaDNI[]=new String[50];
-
-		
-		Scanner s;
-			try {
-				s = new Scanner(f);
-				int i=0;
-				while (s.hasNextLine()) {
-					String linea = s.nextLine();
-					Scanner sl = new Scanner(linea);
-					sl.useDelimiter("\\s*,\\s*");
-				
-					//Solo se lee el primer campo de cada linea , que es el DNI
-					System.out.println("Paciente "+(i+1)+" DNI :"+sl.next());
-					listaDNI[i]=sl.next();
-					i++;
-					
-				}//while
-				s.close();
-				
-				return(listaDNI);
-				
-			} catch (FileNotFoundException e) {
-				// PrintWriter pw = null;
-				e.printStackTrace();
-				// e.printStackTrace(pw);
-			}//try
-			return listaDNI;
-		
-	}//mostrarPacientesExistentes
-	
+	/**
+	 * metodo guardarVisita que recibe como parametro un objeto Persona
+	 * @param p
+	 */
 	public void guardaVisita(Persona p) {
-
-
 		
 		FileWriter fichero = null;
 		PrintWriter pw = null;
@@ -145,8 +119,10 @@ public class TratamientoFicheros{
 			//Se genera un objeto tipo Calendar , Date esta deprecated
 			Calendar calendario = new GregorianCalendar();
 			
-			//Se guardan los datos de la visita
-			pw.println(p.DNI+","+calendario.get(Calendar.DATE)+","+calendario.get(Calendar.HOUR)+","+p.peso+" kg ,"+p.altura+" m ,"+p.calcularIMC()+" ,");
+			//Se muestran y se guardan los datos de la visita
+			System.out.println("Los datos de la visita son:");
+			System.out.println(p.DNI+","+calendario.get(Calendar.DAY_OF_MONTH)+"/"+(calendario.get(Calendar.MONTH)+1)+"/"+calendario.get(Calendar.YEAR)+","+calendario.get(Calendar.HOUR_OF_DAY)+":"+calendario.get(Calendar.MINUTE)+","+p.peso+" kg ,"+p.altura+" m ,"+p.calcularIMC()+" ,");
+			pw.println(p.DNI+","+calendario.get(Calendar.DAY_OF_MONTH)+"/"+(calendario.get(Calendar.MONTH)+1)+"/"+calendario.get(Calendar.YEAR)+","+calendario.get(Calendar.HOUR_OF_DAY)+":"+calendario.get(Calendar.MINUTE)+","+p.peso+" kg ,"+p.altura+" m ,"+p.calcularIMC()+" ,");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -164,10 +140,16 @@ public class TratamientoFicheros{
 		
 		System.out.println("Se ha añadido la visita con éxito de este paciente nuevo...");
 	
-	}//guardaVisita que recibe un objeto Persona
+	}//guardarVisita 
 	
+	/**
+	 * metodo guardarVisita que recibe 3 parametros
+	 * @param dni
+	 * @param altura_actual
+	 * @param peso_actual
+	 */
 	//guardaVisita que recibe parametros y no un objeto Persona
-	public void guardaVisita(String dni, float altura_actual ,float peso_actual) {
+	public void guardarVisita(String dni, float altura_actual ,float peso_actual) {
 
 		FileWriter fichero = null;
 		PrintWriter pw = null;
@@ -181,8 +163,11 @@ public class TratamientoFicheros{
 			//Se genera un objeto tipo Calendar , Date esta deprecated
 			Calendar calendario = new GregorianCalendar();
 			
-			//Se guardan los datos de la visita
-			pw.println(dni+","+calendario.get(Calendar.DATE)+","+calendario.get(Calendar.HOUR)+","+peso_actual+" kg ,"+altura_actual+" m ,"+Persona.calcularIMC(altura_actual,peso_actual)+" , ");
+			
+			//Se muestran y se guardan los datos de la visita
+			System.out.println("Los datos de la visita son:");
+			System.out.println(dni+","+calendario.get(Calendar.DAY_OF_MONTH)+"/"+(calendario.get(Calendar.MONTH)+1)+"/"+calendario.get(Calendar.YEAR)+","+calendario.get(Calendar.HOUR_OF_DAY)+":"+calendario.get(Calendar.MINUTE)+","+peso_actual+" kg ,"+altura_actual+" m ,"+Persona.calcularIMC(altura_actual,peso_actual)+" , ");
+			pw.println(dni+","+calendario.get(Calendar.DAY_OF_MONTH)+"/"+(calendario.get(Calendar.MONTH)+1)+"/"+calendario.get(Calendar.YEAR)+","+calendario.get(Calendar.HOUR_OF_DAY)+":"+calendario.get(Calendar.MINUTE)+","+peso_actual+" kg ,"+altura_actual+" m ,"+Persona.calcularIMC(altura_actual,peso_actual)+" , ");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -202,6 +187,5 @@ public class TratamientoFicheros{
 		
 	}//guardaVisita que recibe parametros
 	
-
 	
 }//TratamientoFicheros

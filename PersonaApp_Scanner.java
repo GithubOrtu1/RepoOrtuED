@@ -2,9 +2,9 @@ package PracticaED;
 
 /**
  * Clase PersonaApp_Scanner ejecutable 
- * @version 2.1 25/03/2023 
+ * @version 2.1 05/04/2023 
  * @author eslooj
- * Se añade la funcionalidad de guardar visitas
+ * Se añade la funcionalidad de guardar visitas. Codigo refactorizado
  */
 import java.util.Locale;
 import java.util.Scanner;
@@ -15,43 +15,9 @@ public class PersonaApp_Scanner {
 		// TODO Auto-generated method stub
 		
 		//Se muestra el menú para insertar pacientes, visitas o salir
-		//
-		boolean mostrarMenu=true;
-		
-		do{
-			System.out.println("BASE DE DATOS DE PACIENTES/CONSULTAS v2.1");
-			System.out.println("Indique la opción a ejecutar (1,2,3):");
-			System.out.println("1. Añadir nuevo paciente");
-			System.out.println("2. Añadir nueva visita");
-			System.out.println("3. Salir");
+
+			mostrarMenuInicial(true);
 			
-			//Se captura la opcion
-			Scanner opcion = new Scanner(System.in);
-			int opcion_menu=opcion.nextInt();
-			
-			switch(opcion_menu) {
-			case 1:
-				nuevoPaciente(false,"");
-			break;
-			
-			case 2:
-				nuevaVisita();
-			break;
-			
-			case 3:
-				System.out.println("Se cierra la aplicacion...");
-				mostrarMenu=false;
-			break;
-			
-			default:
-				System.out.println("Opción inválida. Vuelva a indicar una opción");
-			break;
-			
-			}
-			
-		}while(mostrarMenu);
-		
-		
 	}//main
 	
 		/**
@@ -74,7 +40,7 @@ public class PersonaApp_Scanner {
 		}
 		
 		//Metodo que añade un nuevo paciente si no esta dado de alta
-		public static void nuevoPaciente(boolean insertarVisita,String dni_nuevo) {
+		public static void nuevoPaciente(boolean insertarVisita,String dni_existente) {
 			
 			Scanner sc = new Scanner(System.in);
 			sc.useDelimiter("\n");
@@ -109,11 +75,10 @@ public class PersonaApp_Scanner {
 			
 			//Se tienen todos los datos del paciente. Se genera una nueva persona
 			
-			
 			Persona personaX = new Persona(nombre, edad, sexo, peso, altura,calle,localidad,codPostal);
 			//Si el dni viene dado se considera el mismo en lugar del vaor autogenerado
-			if(dni_nuevo!="") {
-				personaX.DNI=dni_nuevo;
+			if(dni_existente!="") {
+				personaX.DNI=dni_existente;
 			}
 			
 			//Se comprueba si el DNI de la nueva persona ya existe en el fichero. Si es así no se inserta 
@@ -122,13 +87,17 @@ public class PersonaApp_Scanner {
 				//DNI duplicado. No se inserta
 				System.out.println("El paciente ya está registrado...");
 			}else{
-				//Se inserta el paciente
-				System.out.println("Se procederá a insertar un nuevo paciente...");
+				//Se muestran los datos del nuevo paciente
+				System.out.println(personaX.toString());
 				
 				//Se guardan los datos del paciente en el fichero
+				System.out.println("Se procederá a insertar un nuevo paciente...");
 				tf1.escribeFichero(personaX);
 			}
 			
+			if(dni_existente!="") {
+				personaX.DNI=dni_existente;
+			}
 			
 			//Si insertarVisita es true se guarda la visita
 			if(insertarVisita){
@@ -168,16 +137,53 @@ public class PersonaApp_Scanner {
 			peso=sc_peso.nextFloat();
 			
 			TratamientoFicheros tf3=new TratamientoFicheros();
-			tf3.guardaVisita(dni_paciente,altura,peso);
+			tf3.guardarVisita(dni_paciente,altura,peso);
 			
 		}else {
-			//Se trata de un paciente nuevo. Se llama a nuevoPaciente con DNI a NULL
+			//Se trata de un paciente nuevo. Se llama a nuevoPaciente con DNI vacio
 			nuevoPaciente(true,"");
-		}
-			
-
+		}			
 			
 		}//nuevaVisita
+		
+		public static void mostrarMenuInicial(boolean mostrarMenu) {
+			
+			do{
+				System.out.println("***********************************************");
+				System.out.println("** BASE DE DATOS DE PACIENTES/CONSULTAS v2.1 **");
+				System.out.println("***********************************************");
+				System.out.println("");
+				System.out.println("Indique la opción a ejecutar (1,2,3):");
+				System.out.println("1. Añadir nuevo paciente");
+				System.out.println("2. Añadir nueva visita");
+				System.out.println("3. Salir");
+			
+				//Se captura la opcion
+				Scanner opcion = new Scanner(System.in);
+				int opcion_menu=opcion.nextInt();
+			
+				switch(opcion_menu) {
+				case 1:
+					nuevoPaciente(false,"");
+				break;
+			
+				case 2:
+					nuevaVisita();
+				break;
+			
+				case 3:
+					System.out.println("Se cierra la aplicacion...");
+				    mostrarMenu=false;
+				break;
+			
+				default:
+					System.out.println("Opción inválida. Vuelva a indicar una opción");
+				break;
+				}
+				
+			}while(mostrarMenu);
+
+		}//mostrarMenuInicial
 		
 		
 }//clase PersonaApp_Scanner
