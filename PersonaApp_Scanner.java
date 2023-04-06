@@ -141,7 +141,7 @@ public class PersonaApp_Scanner {
 			
 		}else {
 			//Se trata de un paciente nuevo. Se llama a nuevoPaciente con DNI vacio
-			nuevoPaciente(true,"");
+			nuevoPaciente(true,dni_paciente);
 		}			
 			
 		}//nuevaVisita
