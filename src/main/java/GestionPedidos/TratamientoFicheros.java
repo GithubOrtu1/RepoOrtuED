@@ -54,17 +54,15 @@ public class TratamientoFicheros{
 		// Añadir flag a true para no machacar contenido del fichero de escritura
             	fichero = new FileWriter(ruta_clientes, true);
                             	
-               	//Se recorre el arrayList de clientes y se guarda en el fichero asociado
-            	
-                for(int i=0;i<=alClientes1.size()-1;i++) 
-                {
-			
+                //Se añade al fichero la ultima posición del arrayList
+		
+                int i=alClientes1.size()-1;
+                
                 //Se guardan cada uno de los campos del cliente separados por el delimitador ,
                 pw = new PrintWriter(fichero);
 			
-                //pw.println(datos[0]+","+datos[1]+","+datos[2]+","+datos[3]+",");
                 pw.println(alClientes1.get(i).getNombre()+","+alClientes1.get(i).getApellidos()+","+alClientes1.get(i).getTlfno()+","+alClientes1.get(i).getDireccion()+",");
-                }//for               
+                //}//for               
 			
                
 		} catch (Exception e) {
@@ -100,15 +98,14 @@ public class TratamientoFicheros{
 		// Añadir flag a true para no machacar contenido del fichero de escritura
             	fichero = new FileWriter(ruta_productos, true);
                             	
-               	//Se recorre el arrayList de Comida y se guarda en el fichero asociado
+               	//Se añade al fichero la ultima posicion del arrayList de Comidas
                             	
-                for(int i=0;i<=alComida1.size()-1;i++) {
+                int i=alComida1.size()-1;
 			
                 //Se guardan cada uno de los campos del cliente separados por el delimitador ,
                 pw = new PrintWriter(fichero);
 		
-                pw.println("C,"+alComida1.get(i).getNombre()+","+alComida1.get(i).getPrecio()+","+alComida1.get(i).getcalorias()+","+alComida1.get(i).getfechaEnvase()+","+alComida1.get(i).getperecedero()+","+alComida1.get(i).getvegano()+","+alComida1.get(i).getFechaCaducidad()+",");
-                }//for               
+                pw.println("C,"+alComida1.get(i).getNombre()+","+alComida1.get(i).getPrecio()+","+alComida1.get(i).getcalorias()+","+alComida1.get(i).getfechaEnvase()+","+alComida1.get(i).getperecedero()+","+alComida1.get(i).getvegano()+","+alComida1.get(i).getFechaCaducidad()+",");           
                    		
                
 		} catch (Exception e) {
@@ -143,15 +140,13 @@ public class TratamientoFicheros{
 		// Añadir flag a true para no machacar contenido del fichero de escritura
             	fichero = new FileWriter(ruta_productos, true);
                             	
-               	//Se recorre el arrayList de Bebida y se guarda en el fichero asociado
+               	//Se añade la ultima posicion del arrayList de Bebidas
                             	
-                for(int i=0;i<=alBebida1.size()-1;i++) {
-			
+                int j=alBebida1.size()-1;
                 //Se guardan cada uno de los campos del cliente separados por el delimitador ,
                 pw = new PrintWriter(fichero);
 		
-                pw.println("B,"+alBebida1.get(i).getNombre()+","+alBebida1.get(i).getPrecio()+","+alBebida1.get(i).getMedida()+","+alBebida1.get(i).getFechaEnvase()+","+alBebida1.get(i).getGaseoso()+","+alBebida1.get(i).getLacteo()+","+alBebida1.get(i).getFechaCaducidad()+",");
-                }//for               
+                pw.println("B,"+alBebida1.get(j).getNombre()+","+alBebida1.get(j).getPrecio()+","+alBebida1.get(j).getMedida()+","+alBebida1.get(j).getFechaEnvase()+","+alBebida1.get(j).getGaseoso()+","+alBebida1.get(j).getLacteo()+","+alBebida1.get(j).getFechaCaducidad()+",");           
                    		
                
 		} catch (Exception e) {

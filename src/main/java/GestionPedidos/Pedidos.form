@@ -52,14 +52,12 @@
                       <Component id="lblProductosDisponiblesComida" min="-2" pref="192" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="228" pref="228" max="-2" attributes="0"/>
-                      <Component id="btnMostrarDatos" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="39" pref="39" max="-2" attributes="0"/>
-                      <Component id="btnRealizarPedido" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane3" min="-2" pref="1083" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="452" max="-2" attributes="0"/>
+                      <Component id="btnRealizarPedido" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -86,10 +84,7 @@
                   </Group>
               </Group>
               <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnMostrarDatos" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnRealizarPedido" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="btnRealizarPedido" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
               <Component id="jScrollPane3" min="-2" pref="191" max="-2" attributes="0"/>
           </Group>
@@ -133,14 +128,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="btnMostrarDatos">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Mostrar Datos"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMostrarDatosActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="btnRealizarPedido">
       <Properties>
         <Property name="text" type="java.lang.String" value="Realizar pedido"/>

@@ -188,29 +188,56 @@ public class Clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tfDireccionActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-     //Se muestran los datos informados en el textArea asociada
-    String datos[]=new String[50];
 
+
+    //Se comprueba que los campos esten informados...
     
-     datos[0]=this.tfNombre.getText();
-     datos[1]=this.tfApellidos.getText();
-     datos[2]=this.tfTelefono.getText();
-     datos[3]=this.tfDireccion.getText();
-     
-     //se limpia el formulario
-     this.tfNombre.setText("");
-     this.tfApellidos.setText("");
-     this.tfTelefono.setText("");
-     this.tfDireccion.setText("");
-     
-     this.taDatosCliente.append("Los datos del nuevo cliente son Nombre: "+datos[0]+", Apellidos: "+datos[1]+", Telefono: "+datos[2]+", Direccion: "+datos[3]+"\n");
-     
-     //Se genera un nuevo objeto tipo DatosCliente
-     
-    DatosClientes nuevoCliente=new DatosClientes(datos[0],datos[1],datos[2],datos[3]);
+    if(this.tfTelefono.getText().isEmpty() ||this.tfNombre.getText().isEmpty()|| tfApellidos.getText().isEmpty() ||tfDireccion.getText().isEmpty()){
+        
+        try{
+            throw new MisExcepciones(1);
+            }catch(MisExcepciones e){
+            e.getMessage();
+        }
+    }else{
     
-    //Se añade al arrayList...
+    //Todos los campos estan informados...
+    
+        //Se comprueba que el formato del telefono sea correcto...
+    
+        if(this.tfTelefono.getText().matches("^[9|6|7][0-9]{8}$")==false){
+        
+            try{
+            throw new MisExcepciones(2);
+            }catch(MisExcepciones e){
+            e.getMessage();
+            }
+            
+        }else{
+            
+        //Todo ok. Se procede al alta del cliente
+        
+        //Se muestran los datos informados en el textArea asociada
+        String datos[]=new String[50];
+
+        datos[0]=this.tfNombre.getText();
+        datos[1]=this.tfApellidos.getText();
+        datos[2]=this.tfTelefono.getText();
+        datos[3]=this.tfDireccion.getText();
+     
+        //se limpia el formulario
+        this.tfNombre.setText("");
+        this.tfApellidos.setText("");
+        this.tfTelefono.setText("");
+        this.tfDireccion.setText("");
+     
+        this.taDatosCliente.append("Los datos del nuevo cliente son Nombre: "+datos[0]+", Apellidos: "+datos[1]+", Telefono: "+datos[2]+", Direccion: "+datos[3]+"\n");
+     
+        //Se genera un nuevo objeto tipo DatosCliente
+     
+        DatosClientes nuevoCliente=new DatosClientes(datos[0],datos[1],datos[2],datos[3]);
+    
+        //Se añade al arrayList...
     
         alClientes2.add(nuevoCliente);
         
@@ -218,8 +245,12 @@ public class Clientes extends javax.swing.JInternalFrame {
         TratamientoFicheros tfClientes=new TratamientoFicheros();
         tfClientes.escribeFicheroClientes(alClientes2);
         
-        this.taDatosCliente.append("Los datos se han volcado a fichero correctamente...");
-        
+        this.taDatosCliente.append("Los datos se han volcado a fichero correctamente...\n");
+            
+        }//if excepcion formto tlfno
+    
+    }//if excepciones campos vacios
+    
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

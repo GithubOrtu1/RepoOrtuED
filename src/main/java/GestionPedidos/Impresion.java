@@ -25,6 +25,6 @@ class Impresion implements interfazImpresion{
     
     @Override
     public void imprimirTicket(String datosPedido){
-        JOptionPane.showMessageDialog(null,"Los datos del ultimo pedido realizado son: \n"+datosPedido,"INFORMATION_MESSAGE", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,datosPedido,"INFORMATION_MESSAGE", JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -23,6 +23,15 @@ public class Bebida extends DatosProductos{
     String fechaEnvase;
     String fechaCaducidad;
     String oferta;
+    String estado;
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     public String getOferta() {
         return oferta;
@@ -76,6 +85,7 @@ public class Bebida extends DatosProductos{
         
         //Campo para determinar si el producto esta en oferta
         this.oferta="false";
+        this.estado="apto";
         
     }
 

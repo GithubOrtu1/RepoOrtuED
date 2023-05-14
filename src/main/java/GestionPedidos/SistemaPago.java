@@ -4,6 +4,8 @@
  */
 package GestionPedidos;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author MSI
@@ -11,7 +13,7 @@ package GestionPedidos;
 public class SistemaPago extends javax.swing.JFrame {
     
     float importePedido;
-    String datosPedido;
+    String datosPedido="";
 
     /**
      * Creates new form SistemaPagos2
@@ -20,10 +22,14 @@ public class SistemaPago extends javax.swing.JFrame {
     public SistemaPago(float importePedido,String datosPedido) {
         initComponents();
         
+        this.datosPedido=datosPedido;
+        this.importePedido=importePedido;
+        
         //Se muestra el importe del pedido generado previamente...
         tfImportePagar.setText(String.valueOf(importePedido));
         tfImportePagar.setEditable(false);
         tfImportePagar.setEnabled(false);
+        
     }
 
     /**
@@ -83,6 +89,11 @@ public class SistemaPago extends javax.swing.JFrame {
         rbTarjeta.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 rbTarjetaItemStateChanged(evt);
+            }
+        });
+        rbTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbTarjetaActionPerformed(evt);
             }
         });
 
@@ -204,7 +215,7 @@ public class SistemaPago extends javax.swing.JFrame {
     private void rbTarjetaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbTarjetaItemStateChanged
 
         if(rbTarjeta.isSelected()){
-            lblIImporteIngresar.setText("Introduzca su numero de tarjeta (15/16 digitos) :\n");
+            lblIImporteIngresar.setText("Introduzca su numero de tarjeta (15 digitos) :\n");
             tfImporteIngresar.setSize(15,5);
             tfImporteIngresar.setText("");
         }
@@ -234,204 +245,191 @@ public class SistemaPago extends javax.swing.JFrame {
         if(btnPagar.getText().equals("Pagar"))
         {
             if(rbEfectivo.isSelected()) {
+                
                 importePagar=Float.parseFloat(tfImportePagar.getText());
-                importeIngresar=Float.parseFloat(tfImporteIngresar.getText());
+                
+                try{
+                        
+                     importeIngresar=Float.parseFloat(this.tfImporteIngresar.getText());
+                     
+                        if((importeIngresar<=0)||(importeIngresar<importePagar)){
+                            try{
+                            throw new MisExcepciones(10);
+                            }catch(MisExcepciones e){
+                            e.getMessage();
+                            }
+                        }else{
+                            //Todo ok
+                            fDiff1=(float) (importeIngresar-importePagar);
+                            //Se limita la precisión a 2 decimales
+                            fDiff1= (float) Math.round(fDiff1 * 100) / 100;
+                            taDatosPago.append("La diferencia a devolver es: "+fDiff1+" €\n");
+                            //Se guarda la diferencia original
+                            float fDiff_aux=fDiff1;
 
-                fDiff1=(float) (importeIngresar-importePagar);
-                //Se limita la precisión a 2 decimales
-                fDiff1= (float) Math.round(fDiff1 * 100) / 100;
-                taDatosPago.append("La diferencia a devolver es: "+fDiff1+" €\n");
-                //Se guarda la diferencia original
-                float fDiff_aux=fDiff1;
+                            //Se calculan las vueltas dependiendo de la diferencia calculada
+                            if (fDiff_aux>=50.00) {
+                            //Se calcula el cociente para saber el numero de billetes a devolver
+                            int iBilletes50=(int) (fDiff_aux/50);
 
-                //Se calculan las vueltas dependiendo de la diferencia calculada
-                if (fDiff_aux>=50.00) {
-                    //Se calcula el cociente para saber el numero de billetes a devolver
-                    int iBilletes50=(int) (fDiff_aux/50);
+                            taDatosPago.append("Se devuelve(n) "+iBilletes50+" billete(s) de 50 euros...\n");
+                            //Se actualiza la diferencia a devolver
+                            fDiff_aux=fDiff1-iBilletes50*50;
+                            }//billetes 50
 
-                    taDatosPago.append("Se devuelve(n) "+iBilletes50+" billete(s) de 50 euros...\n");
-                    //Se actualiza la diferencia a devolver
-                    fDiff_aux=fDiff1-iBilletes50*50;
-                }//billetes 50
+                            if (fDiff_aux>=20.00) {
+                            //Se calcula el cociente para saber el numero de billetes a devolver
+                            int iBilletes20=(int) (fDiff_aux/20);
 
-                if (fDiff_aux>=20.00) {
-                    //Se calcula el cociente para saber el numero de billetes a devolver
-                    int iBilletes20=(int) (fDiff_aux/20);
+                            taDatosPago.append("Se devuelve(n) "+iBilletes20+" billete(s) de 20 euros...\n");
+                            //Se actualiza la diferencia a devolver
+                            fDiff_aux=fDiff_aux-iBilletes20*20;
+                            }//billetes 20
 
-                    taDatosPago.append("Se devuelve(n) "+iBilletes20+" billete(s) de 20 euros...\n");
-                    //Se actualiza la diferencia a devolver
-                    fDiff_aux=fDiff_aux-iBilletes20*20;
-                }//billetes 20
+                            if (fDiff_aux>=10.00) {
+                            //Se calcula el cociente para saber el numero de billetes a devolver
+                            int iBilletes10=(int) (fDiff_aux/10);
 
-                if (fDiff_aux>=10.00) {
-                    //Se calcula el cociente para saber el numero de billetes a devolver
-                    int iBilletes10=(int) (fDiff_aux/10);
+                            taDatosPago.append("Se devuelve(n) "+iBilletes10+" billete(s) de 10 euros...\n");
+                            //Se actualiza la diferencia a devolver
+                            fDiff_aux=fDiff_aux-iBilletes10*10;
+                            }//billetes 10
 
-                    taDatosPago.append("Se devuelve(n) "+iBilletes10+" billete(s) de 10 euros...\n");
-                    //Se actualiza la diferencia a devolver
-                    fDiff_aux=fDiff_aux-iBilletes10*10;
-                }//billetes 10
+                            if (fDiff_aux>=5.00) {
+                            //Se calcula el cociente para saber el numero de billetes a devolver
+                            int iBilletes5=(int) (fDiff_aux/5);
 
-                if (fDiff_aux>=5.00) {
-                    //Se calcula el cociente para saber el numero de billetes a devolver
-                    int iBilletes5=(int) (fDiff_aux/5);
+                            taDatosPago.append("Se devuelve(n) "+iBilletes5+" billete(s) de 5 euros...\n");
+                            //Se actualiza la diferencia a devolver
+                            fDiff_aux=fDiff_aux-iBilletes5*5;
+                            }//billetes 5
 
-                    taDatosPago.append("Se devuelve(n) "+iBilletes5+" billete(s) de 5 euros...\n");
-                    //Se actualiza la diferencia a devolver
-                    fDiff_aux=fDiff_aux-iBilletes5*5;
-                }//billetes 5
+                            if (fDiff_aux>=2.00) {
+                            //Se calcula el cociente para saber el numero de monedas a devolver
+                            int iMonedas2=(int) (fDiff_aux/2);
 
-                if (fDiff_aux>=2.00) {
-                    //Se calcula el cociente para saber el numero de monedas a devolver
-                    int iMonedas2=(int) (fDiff_aux/2);
+                            taDatosPago.append("Se devuelve(n) "+iMonedas2+" moneda(s) de 2 euros...\n");
+                            //Se actualiza la diferencia a devolver
+                            fDiff_aux=fDiff_aux-iMonedas2*2;
+                            }//monedas 2
 
-                    taDatosPago.append("Se devuelve(n) "+iMonedas2+" moneda(s) de 2 euros...\n");
-                    //Se actualiza la diferencia a devolver
-                    fDiff_aux=fDiff_aux-iMonedas2*2;
-                }//monedas 2
+                            if (fDiff_aux>=1.00) {
+                            //Se calcula el cociente para saber el numero de monedas a devolver
+                            int iMonedas=(int) (fDiff_aux/1);
+                            taDatosPago.append("Se devuelve(n) "+iMonedas+" moneda(s) de 1 euro...\n");
+                            fDiff_aux=fDiff_aux-iMonedas*1;
 
-                if (fDiff_aux>=1.00) {
-                    //Se calcula el cociente para saber el numero de monedas a devolver
-                    int iMonedas=(int) (fDiff_aux/1);
-                    taDatosPago.append("Se devuelve(n) "+iMonedas+" moneda(s) de 1 euro...\n");
-                    fDiff_aux=fDiff_aux-iMonedas*1;
+                            }//monedas 1
 
-                }//monedas 1
+                            //Se devuelve(n)n los centimos restantes que seran los dos decimales restantes
+                            int iCentimos=(int) (fDiff_aux*100);
+                            taDatosPago.append("Se devuelve(n) "+iCentimos+" centimo(s)...\n");
+                            taDatosPago.append("Devolucion completada.\n");
+                            //centimos
 
-                //Se devuelve(n)n los centimos restantes que seran los dos decimales restantes
-                int iCentimos=(int) (fDiff_aux*100);
-                taDatosPago.append("Se devuelve(n) "+iCentimos+" centimo(s)...\n");
-                taDatosPago.append("Devolucion completada.\n");
-                //centimos
-
-                //Se informa al usuario de que el pago se ha realizado ok
-                taDatosPago.append("Pago en EFECTIVO realizado correctamente...\n");
-                //Se cambia el texto del boton a IMPRIMIR TICKET...
-                 btnPagar.setText("IMPRIMIR TICKET");
+                            //Se informa al usuario de que el pago se ha realizado ok
+                            taDatosPago.append("Pago en EFECTIVO realizado correctamente...\n");
+                            //Se cambia el texto del boton a IMPRIMIR TICKET...
+                            btnPagar.setText("IMPRIMIR TICKET");
+                        }
+                }catch (NumberFormatException ex){
+                     JOptionPane.showMessageDialog(null,"Formato de importe a ingresar incorrecto. Revise dicho valor por favor");
+                     //ex.printStackTrace();
+                }
+                
             }//fin pago efectivo
 
             if(rbCuenta.isSelected()) {
 
-               
                 String num_cuenta;
                 num_cuenta=tfImporteIngresar.getText();                 
 
-                taDatosPago.append("Número de cuenta introducido : "+num_cuenta+" \n");
-
-                    //Se comprueba si hay algun caracter que no sea numero o espacio en blanco
-                    for(int i=0;i<num_cuenta.length();i++){
-                        char c=num_cuenta.charAt(i);
-
-                        if(((c>='0') && (c<='9'))) {
-                            //Valores validos
-                        }else {
-                            //Valores no validos
-                            taDatosPago.append("Se han introducido valores no validos en el número de cuenta: posicion "+i+", caracter "+c+" |n");
-                            taDatosPago.append("Vuelva a introducirla , por favor \n");
-                            
-                            
-                        }
-                    }//for
-
-                    if(num_cuenta.length()!=20) {
-                        taDatosPago.append("Longitud de numero de cuenta incorrecta. Vuelva a introducirla , por favor \n");
+                    if(num_cuenta.length()!=20){
+                        
+                        try{
+                            throw new MisExcepciones(12);
+                            }catch(MisExcepciones e){
+                            e.getMessage();
+                            }
                         
                      
                     }else{
-                        taDatosPago.append("El numero de cuenta introducido es correcto...\n" );
-                        taDatosPago.append("Pago en CUENTA realizado correctamente por importe de: "+importePedido);
-                        //Se cambia el texto del boton a IMPRIMIR TICKET...
-                        btnPagar.setText("IMPRIMIR TICKET");
-              
+                        
+                        boolean cuenta_valida=true;
+                        
+                            //Se comprueba si hay algun caracter que no sea numero o espacio en blanco
+                            for(int i=0;i<num_cuenta.length();i++){
+                            char c=num_cuenta.charAt(i);
+
+                                if(((c>='0') && (c<='9'))) {
+                                //Valores validos
+                                }else {
+                                //Valores no validos
+                                    try{
+                                    throw new MisExcepciones(11);
+                                    }catch(MisExcepciones e){
+                                    e.getMessage();
+                                    }
+                                 cuenta_valida=false;
+
+                                }//if
+                            }//for
+                        
+                            if(cuenta_valida){
+                            taDatosPago.append("El numero de cuenta introducido "+num_cuenta+" es correcto...\n" );
+                            taDatosPago.append("Pago en CUENTA realizado correctamente por importe de: "+this.importePedido+" € \n");
+                            //Se cambia el texto del boton a IMPRIMIR TICKET...
+                            btnPagar.setText("IMPRIMIR TICKET");
+                            }//if cuenta_valida
                     }
 
             }//fin pago cuenta
 
             if(rbTarjeta.isSelected()) {
-
-        
-                String num_tarjeta;
-                num_tarjeta=tfImporteIngresar.getText();
                 
+                 String num_tarjeta;
+                num_tarjeta=tfImporteIngresar.getText();                 
 
-                    taDatosPago.append("Número de tarjeta introducido: "+num_tarjeta+" \n" );
+                    if(num_tarjeta.length()!=15){
+                        
+                        try{
+                            throw new MisExcepciones(13);
+                            }catch(MisExcepciones e){
+                            e.getMessage();
+                            }
+                        
+                     
+                    }else{
+                        
+                        boolean tarjeta_valida=true;
+                        
+                            //Se comprueba si hay algun caracter que no sea numero o espacio en blanco
+                            for(int i=0;i<num_tarjeta.length();i++){
+                            char c=num_tarjeta.charAt(i);
 
-                    //Se comprueba si hay algun caracter que no sea numero o espacio en blanco
-                    for(int i=0;i<num_tarjeta.length();i++){
-                        char c=num_tarjeta.charAt(i);
+                                if(((c>='0') && (c<='9'))) {
+                                //Valores validos
+                                }else {
+                                //Valores no validos
+                                    try{
+                                    throw new MisExcepciones(14);
+                                    }catch(MisExcepciones e){
+                                    e.getMessage();
+                                    }
+                                 tarjeta_valida=false;
 
-                        if(((c>='0') && (c<='9')) || (c==' ')) {
-                            //Valores validos
-                        }else {
-                            //Valores no validos
-                            taDatosPago.append("Se han introducido valores no validos en el número de trajeta: posicion "+i+", caracter "+c+" \n");
-                            
-                        }
-                    }//for
-
-                    switch(num_tarjeta.charAt(0)) {
-
-                        case '3':
-
-                        //Se comprueba si tiene longitud de 15 digitos
-                        if(num_tarjeta.length()!=15) {
-                            taDatosPago.append("Longitud de numero de tarjeta incorrecta.Vuelva a introducirla , por favor \n");
-                            tfImporteIngresar.setText("");
-                            
-                        }else{
-                            taDatosPago.append("El numero de tarjeta introducido es correcto...\n" );
-                            taDatosPago.append("Tarjeta American Express..\n");
-                            taDatosPago.append("Pago con TARJETA realizado correctamente por importe de : "+importePedido+" € \n");
+                                }//if
+                            }//for
+                        
+                            if(tarjeta_valida){
+                            taDatosPago.append("El numero de tarjeta introducido "+num_tarjeta+" es correcto...\n" );
+                            taDatosPago.append("Pago en TARJETA realizado correctamente por importe de: "+this.importePedido+" € \n");
                             //Se cambia el texto del boton a IMPRIMIR TICKET...
                             btnPagar.setText("IMPRIMIR TICKET");
-                            tfImporteIngresar.setText("");
-                           
-                        }
-                        break;
+                            }//if tarjeta_valida
+                    }
 
-                        case '4':
-
-                        //Se comprueba si tiene longitud de 16 digitos
-                        if(num_tarjeta.length()!=16) {
-                            taDatosPago.append("Longitud de numero de tarjeta incorrecta.Vuelva a introducirla , por favor \n");
-                            
-                            
-                        }else {
-                            taDatosPago.append("El numero de tarjeta introducido es correcto...\n" );
-                            taDatosPago.append("Tarjeta Visa...\n");
-                            taDatosPago.append("Pago con TARJETA realizado correctamente por importe de : "+importePedido+" € \n");
-                            //Se cambia el texto del boton a IMPRIMIR TICKET...
-                            btnPagar.setText("IMPRIMIR TICKET");
-                            tfImporteIngresar.setText("");
-                           
-                        }
-                        break;
-
-                        case '5':
-
-                        //Se comprueba si tiene longitud de 16 digitos
-                        if(num_tarjeta.length()!=16) {
-                            taDatosPago.append("Longitud de numero de tarjeta incorrecta.Vuelva a introducirla , por favor \n");
-                            
-                            
-                        }else {
-                            taDatosPago.append("El numero de tarjeta introducido es correcto...\n" );
-                            taDatosPago.append("Tarjeta Master Card...\n");
-                            taDatosPago.append("Pago con TARJETA realizado correctamente por importe de : "+importePedido+" € \n");
-                            //Se cambia el texto del boton a IMPRIMIR TICKET...
-                            btnPagar.setText("IMPRIMIR TICKET");
-                            tfImporteIngresar.setText("");
-                            
-                        }
-                        break;
-
-                            default:
-                            taDatosPago.append("Tarjeta no reconocida.Vuelva a introducirla , por favor \n");
-                            
-                        break;
-
-                    }//switch
-
+               
             }//fin pago tarjeta
 
             
@@ -443,6 +441,10 @@ public class SistemaPago extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnPagarActionPerformed
+
+    private void rbTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTarjetaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbTarjetaActionPerformed
 
        private void btnPagarActionPerformed() {                                         
         

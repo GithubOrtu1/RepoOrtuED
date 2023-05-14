@@ -70,7 +70,7 @@
                                                       <Component id="dtFechaEnvase" min="-2" pref="127" max="-2" attributes="0"/>
                                                   </Group>
                                                   <Group type="102" alignment="0" attributes="0">
-                                                      <Component id="lblNuevoProducto" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="btnNuevoProducto" min="-2" max="-2" attributes="0"/>
                                                       <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                                                       <Component id="btnDetalleProducto" min="-2" pref="168" max="-2" attributes="0"/>
                                                   </Group>
@@ -152,7 +152,7 @@
               </Group>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblNuevoProducto" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnNuevoProducto" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnDetalleProducto" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -192,12 +192,12 @@
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="dtFechaEnvase">
     </Component>
-    <Component class="javax.swing.JButton" name="lblNuevoProducto">
+    <Component class="javax.swing.JButton" name="btnNuevoProducto">
       <Properties>
         <Property name="text" type="java.lang.String" value="Grabar nuevo  producto"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lblNuevoProductoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevoProductoActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">

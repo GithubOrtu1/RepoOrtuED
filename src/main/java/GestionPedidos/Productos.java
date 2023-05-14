@@ -13,8 +13,6 @@ import javax.swing.JOptionPane;
  * @author MSI
  */
 public class Productos extends javax.swing.JInternalFrame {
-    
-  
 
     char ultimoProducto='X';
 
@@ -48,7 +46,7 @@ public class Productos extends javax.swing.JInternalFrame {
         tfPrecio = new javax.swing.JTextField();
         lblFechaEnvase = new javax.swing.JLabel();
         dtFechaEnvase = new com.toedter.calendar.JDateChooser();
-        lblNuevoProducto = new javax.swing.JButton();
+        btnNuevoProducto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         taDatosProductos = new javax.swing.JTextArea();
         rbComida = new javax.swing.JRadioButton();
@@ -78,10 +76,10 @@ public class Productos extends javax.swing.JInternalFrame {
 
         lblFechaEnvase.setText("Fecha envase");
 
-        lblNuevoProducto.setText("Grabar nuevo  producto");
-        lblNuevoProducto.addActionListener(new java.awt.event.ActionListener() {
+        btnNuevoProducto.setText("Grabar nuevo  producto");
+        btnNuevoProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lblNuevoProductoActionPerformed(evt);
+                btnNuevoProductoActionPerformed(evt);
             }
         });
 
@@ -164,7 +162,7 @@ public class Productos extends javax.swing.JInternalFrame {
                                                         .addGap(32, 32, 32)
                                                         .addComponent(dtFechaEnvase, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                     .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(lblNuevoProducto)
+                                                        .addComponent(btnNuevoProducto)
                                                         .addGap(52, 52, 52)
                                                         .addComponent(btnDetalleProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                                     .addGroup(layout.createSequentialGroup()
@@ -222,7 +220,7 @@ public class Productos extends javax.swing.JInternalFrame {
                         .addComponent(lblFechaEnvase)))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNuevoProducto)
+                    .addComponent(btnNuevoProducto)
                     .addComponent(btnDetalleProducto))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -232,105 +230,285 @@ public class Productos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblNuevoProductoActionPerformed
-        
-    //Se muestran los datos informados en el textArea asociada
-    String datos[]=new String[50];
+    private void btnNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProductoActionPerformed
 
-    //Se añade comida
-    if (rbComida.isSelected()){
+        if(this.rbComida.isSelected()){
         
-       ultimoProducto='C';
+        comprobarExcepcionesNuevaComida();
+        
+        }
     
-     datos[0]=this.tfNombre.getText();
-     datos[1]=this.tfPrecio.getText();
-     datos[2]=this.tfCalorias.getText();
+        if(this.rbBebida.isSelected()){
+        
+        comprobarExcepcionesNuevaBebida();
+        }
+    }
+    
+    private void comprobarExcepcionesNuevaComida(){
+    //Se comprueba que los campos esten informados
+           
+    if(((this.rbComida.isSelected()==false) && (this.rbBebida.isSelected()==false)) || this.tfNombre.getText().isEmpty()|| tfPrecio.getText().isEmpty() ||tfCalorias.getText().isEmpty()|| this.dtFechaEnvase.getDate()==null){
+        
+        try{
+            throw new MisExcepciones(003);
+            }catch(MisExcepciones e){
+            e.getMessage();
+            }
+        
+    }else{
+    
+        //Todos los campos estan informados...
+    
+        //Se comprueba que el formato de calorias sea el correcto (solo números)
+    
+        if(this.tfCalorias.getText().matches("[a-zA-Z]")){
+        
+            try{
+                throw new MisExcepciones(004);
+                }catch(MisExcepciones e){
+                e.getMessage();
+                }
+            
+        }else{
+            
+            
+            //Se comprueba el formato numerico del precio
+                    try{
+                        
+                     float f=Float.parseFloat(this.tfPrecio.getText());
+                     
+                        if(f<=0){
+                            try{
+                            throw new MisExcepciones(005);
+                            }catch(MisExcepciones e){
+                            e.getMessage();
+                            }
+                        }else{
+                         
+                            //Precio con formato valido
+                     
+                            //Todo ok. Se procede al alta del producto
+            
+                            //Se muestran los datos informados en el textArea asociada
+                            String datos[]=new String[50];
+
+                            //Se añade comida
+                            if (rbComida.isSelected())
+                            {
+        
+                            ultimoProducto='C';
+    
+                            datos[0]=this.tfNombre.getText();
+                            datos[1]=this.tfPrecio.getText();
+                            datos[2]=this.tfCalorias.getText();
      
-     //formato
-      SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                            //formato
+                            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
       
-     datos[3]=(formato.format(dtFechaEnvase.getDate()));
-     datos[4]=Boolean.toString((this.chkPerecedero.isSelected()));
-     datos[5]=Boolean.toString((this.chkVegano.isSelected()));
+                            datos[3]=(formato.format(dtFechaEnvase.getDate()));
+                            datos[4]=Boolean.toString((this.chkPerecedero.isSelected()));
+                            datos[5]=Boolean.toString((this.chkVegano.isSelected()));
     
+                            //Se limpian los datos del formulario...
      
-     //Se limpian los datos del formulario...
-     
-     this.tfNombre.setText("");
-     this.tfPrecio.setText("");
-     this.tfCalorias.setText("");
-     //this.dtFechaEnvase.setDate(null);
-     this.chkPerecedero.setSelected(false);
-     this.chkVegano.setSelected(false);
+                            this.tfNombre.setText("");
+                            this.tfPrecio.setText("");
+                            this.tfCalorias.setText("");
+                            //this.dtFechaEnvase.setDate(null);
+                            this.chkPerecedero.setSelected(false);
+                            this.chkVegano.setSelected(false);
     
-     //Se genera un nuevo objeto tipo Comida
+                            //Se genera un nuevo objeto tipo Comida
      
-    Comida nuevaComida=new Comida(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5]);
+                            Comida nuevaComida=new Comida(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5]);
     
+                            //Se muestran los datos en el textArea
      
-     //Se muestran los datos en el textArea
-     
-    this.taDatosProductos.append("Los datos del nuevo cliente son: COMIDA Nombre: "+datos[0]+", Precio: "+datos[1]+", Calorias: "+datos[2]+" , Fecha envase: "+datos[3]+", Perecedero: "+datos[4]+", Vegano: "+datos[5]+",Fecha Caducidad :"+nuevaComida.getFechaCaducidad()+", \n");
-    this.dtFechaEnvase.setDate(null);
+                            this.taDatosProductos.append("Los datos del nuevo cliente son: COMIDA Nombre: "+datos[0]+", Precio: "+datos[1]+", Calorias: "+datos[2]+" , Fecha envase: "+datos[3]+", Perecedero: "+datos[4]+", Vegano: "+datos[5]+",Fecha Caducidad :"+nuevaComida.getFechaCaducidad()+", \n");
+                            this.dtFechaEnvase.setDate(null);
     
-    //Se añade al arrayList de Comida...
-     alComida2.add(nuevaComida);
+                            //Se añade al arrayList de Comida...
+                            alComida2.add(nuevaComida);
      
-    TratamientoFicheros tfProductos=new TratamientoFicheros();
-    tfProductos.escribeFicheroProductos(alComida2,alBebida2,'C');
+                            TratamientoFicheros tfProductos=new TratamientoFicheros();
+                            tfProductos.escribeFicheroProductos(alComida2,alBebida2,'C');
         
-    this.taDatosProductos.append("Los datos se han volcado a fichero correctamente...\n");
-     
-    }//
+                            this.taDatosProductos.append("Los datos se han volcado a fichero correctamente...\n");
+                            }//Comida
     
-    
-     
-    //Se añade bebida
-    if (rbBebida.isSelected()){
+                            //Se añade bebida
+                            if (rbBebida.isSelected())
+                            {
         
-        ultimoProducto='B';
+                            ultimoProducto='B';
     
-     datos[0]=this.tfNombre.getText();
-     datos[1]=this.tfPrecio.getText();
-     datos[2]=this.tfMedida.getText();
+                            datos[0]=this.tfNombre.getText();
+                            datos[1]=this.tfPrecio.getText();
+                            datos[2]=this.tfMedida.getText();
      
-     //formato
-      SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                            //formato
+                            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
       
-     datos[3]=(formato.format(dtFechaEnvase.getDate()));
-     datos[4]=Boolean.toString((this.chkGaseoso.isSelected()));
-     datos[5]=Boolean.toString((this.chkLacteo.isSelected()));
+                            datos[3]=(formato.format(dtFechaEnvase.getDate()));
+                            datos[4]=Boolean.toString((this.chkGaseoso.isSelected()));
+                            datos[5]=Boolean.toString((this.chkLacteo.isSelected()));
      
-     //Se limpian los datos del formulario...
+                            //Se limpian los datos del formulario...
      
-     this.tfNombre.setText("");
-     this.tfPrecio.setText("");
-     this.tfMedida.setText("");
-     //this.dtFechaEnvase.setDate(null);
-     this.chkGaseoso.setSelected(false);
-     this.chkLacteo.setSelected(false);
+                            this.tfNombre.setText("");
+                            this.tfPrecio.setText("");
+                            this.tfMedida.setText("");
+                            //this.dtFechaEnvase.setDate(null);
+                            this.chkGaseoso.setSelected(false);
+                            this.chkLacteo.setSelected(false);
      
-     //Se genera un nuevo objeto tipo Bebida
+                            //Se genera un nuevo objeto tipo Bebida
      
-     Bebida nuevaBebida=new Bebida(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5]);
+                            Bebida nuevaBebida=new Bebida(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5]);
      
-     
-     //Se muestran los datos en el textArea
-     this.taDatosProductos.append("Los datos del nuevo producto son: BEBIDA Nombre: "+datos[0]+", Precio: "+datos[1]+" , Medida (ml) :"+datos[2]+", Fecha envase:  :"+datos[3]+", Caseoso : "+datos[4]+", Lacteo : "+datos[5]+",Fecha Caducidad :"+nuevaBebida.getFechaCaducidad()+", \n");
-     this.dtFechaEnvase.setDate(null);
+                            //Se muestran los datos en el textArea
+                            this.taDatosProductos.append("Los datos del nuevo producto son: BEBIDA Nombre: "+datos[0]+", Precio: "+datos[1]+" , Medida (ml) :"+datos[2]+", Fecha envase:  :"+datos[3]+", Caseoso : "+datos[4]+", Lacteo : "+datos[5]+",Fecha Caducidad :"+nuevaBebida.getFechaCaducidad()+", \n");
+                            this.dtFechaEnvase.setDate(null);
     
-    //Se añade al arrayList de Bebida...
-     alBebida2.add(nuevaBebida);
+                            //Se añade al arrayList de Bebida...
+                            alBebida2.add(nuevaBebida);
      
-      TratamientoFicheros tfProductos=new TratamientoFicheros();
-      tfProductos.escribeFicheroProductos(alComida2,alBebida2,'B');
+                            TratamientoFicheros tfProductos=new TratamientoFicheros();
+                            tfProductos.escribeFicheroProductos(alComida2,alBebida2,'B');
         
-      this.taDatosProductos.append("Los datos se han volcado a fichero correctamente...\n");
+                            this.taDatosProductos.append("Los datos se han volcado a fichero correctamente...\n");
 
-    }//Bebida
+                            }//Bebida
+                    
+                         
+                         }//if precio negativo
+                        
+                     
+                     }catch (NumberFormatException ex){
+                     JOptionPane.showMessageDialog(null,"Formato de precio incorrecto. Revise el precio informado por favor");
+                     //ex.printStackTrace();
+                     }
+                                        
+                    
+        }//excepcion calorias
+                    
+            
+    }//excepcion campos vacios
     
-    }//GEN-LAST:event_lblNuevoProductoActionPerformed
+        
+    }//GEN-LAST:event_btnNuevoProductoActionPerformed
 
+    private void comprobarExcepcionesNuevaBebida(){
+    //Se comprueba que los campos esten informados
+           
+    if(((this.rbComida.isSelected()==false) && (this.rbBebida.isSelected()==false)) || this.tfNombre.getText().isEmpty()|| tfPrecio.getText().isEmpty() ||tfMedida.getText().isEmpty()|| this.dtFechaEnvase.getDate()==null){
+        
+        try{
+            throw new MisExcepciones(006);
+            }catch(MisExcepciones e){
+            e.getMessage();
+            }
+        
+    }else{
+    
+        //Todos los campos estan informados...
+    
+        //Se comprueba que el formato de medida sea el correcto (solo números)
+    
+        if(this.tfMedida.getText().matches("[a-zA-Z]")){
+        
+            try{
+                throw new MisExcepciones(007);
+                }catch(MisExcepciones e){
+                e.getMessage();
+                }
+            
+        }else{
+            
+            
+            //Se comprueba el formato numerico del precio
+                    try{
+                        
+                     float f=Float.parseFloat(this.tfPrecio.getText());
+                     
+                        if(f<=0){
+                            try{
+                            throw new MisExcepciones(005);
+                            }catch(MisExcepciones e){
+                            e.getMessage();
+                            }
+                        }else{
+                         
+                            //Precio con formato valido
+                     
+                            //Todo ok. Se procede al alta del producto
+            
+                            //Se muestran los datos informados en el textArea asociada
+                            String datos[]=new String[50];
+    
+                            //Se añade bebida
+                            if (rbBebida.isSelected())
+                            {
+        
+                            ultimoProducto='B';
+    
+                            datos[0]=this.tfNombre.getText();
+                            datos[1]=this.tfPrecio.getText();
+                            datos[2]=this.tfMedida.getText();
+     
+                            //formato
+                            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+      
+                            datos[3]=(formato.format(dtFechaEnvase.getDate()));
+                            datos[4]=Boolean.toString((this.chkGaseoso.isSelected()));
+                            datos[5]=Boolean.toString((this.chkLacteo.isSelected()));
+     
+                            //Se limpian los datos del formulario...
+     
+                            this.tfNombre.setText("");
+                            this.tfPrecio.setText("");
+                            this.tfMedida.setText("");
+                            //this.dtFechaEnvase.setDate(null);
+                            this.chkGaseoso.setSelected(false);
+                            this.chkLacteo.setSelected(false);
+     
+                            //Se genera un nuevo objeto tipo Bebida
+     
+                            Bebida nuevaBebida=new Bebida(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5]);
+     
+                            //Se muestran los datos en el textArea
+                            this.taDatosProductos.append("Los datos del nuevo producto son: BEBIDA Nombre: "+datos[0]+", Precio: "+datos[1]+" , Medida (ml) :"+datos[2]+", Fecha envase:  :"+datos[3]+", Caseoso : "+datos[4]+", Lacteo : "+datos[5]+",Fecha Caducidad :"+nuevaBebida.getFechaCaducidad()+", \n");
+                            this.dtFechaEnvase.setDate(null);
+    
+                            //Se añade al arrayList de Bebida...
+                            alBebida2.add(nuevaBebida);
+     
+                            TratamientoFicheros tfProductos=new TratamientoFicheros();
+                            tfProductos.escribeFicheroProductos(alComida2,alBebida2,'B');
+        
+                            this.taDatosProductos.append("Los datos se han volcado a fichero correctamente...\n");
+
+                            }//Bebida
+                    
+                         
+                         }//if precio negativo
+                        
+                     
+                     }catch (NumberFormatException ex){
+                     JOptionPane.showMessageDialog(null,"Formato de precio incorrecto. Revise el precio informado por favor");
+                     //ex.printStackTrace();
+                     }
+                                        
+                    
+        }//excepcion calorias
+                    
+            
+    }//excepcion campos vacios
+    
+        
+    }       
+    
+    
     private void rbComidaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbComidaItemStateChanged
      
       if(rbComida.isSelected()){
@@ -407,6 +585,7 @@ public class Productos extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDetalleProducto;
+    private javax.swing.JButton btnNuevoProducto;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkGaseoso;
     private javax.swing.JCheckBox chkLacteo;
@@ -418,7 +597,6 @@ public class Productos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblFechaEnvase;
     private javax.swing.JLabel lblMedida;
     private javax.swing.JLabel lblNombre;
-    private javax.swing.JButton lblNuevoProducto;
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JLabel lblTexto;
     private javax.swing.JRadioButton rbBebida;
