@@ -1,9 +1,12 @@
+/* Se añaden los estilos por defecto a la pagina de la calculadora */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Trebuchet MS', 'Arial Narrow', Arial, sans-serif;
 }
+/* Se centra la calculadora y se fijan colores */
 
 body {
     background: #ffffff;
@@ -41,6 +44,8 @@ body {
     margin: 0 auto;
 }
 
+/* Se añaden los estilos a los botones */
+
 .btn {
     margin-left:1px;
     width: 70px;
@@ -56,6 +61,8 @@ body {
     font-size: 106%;
     font-weight: bold;
 }
+
+/* Se añaden los estilos a los botones de operaciones */
 
 .operator {
     margin-left:1px;
@@ -73,7 +80,7 @@ body {
     font-weight: bold;
 }
 
-
+/* Se añaden el hover a todos los botones */
 
 .btn:hover,
 .operator:hover {
